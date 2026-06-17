@@ -8,18 +8,18 @@ from predictor import ShipPredictor
 
 app = FastAPI(title="Ship Detection API")
 
-# Configure CORS
+# Cấu hình CORS cho Frontend gọi API
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows React to access API
+    allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Initialize predictor
-# It will load the model from model/faster_rcnn_ship.pth
-predictor = ShipPredictor()
+# Khởi tạo predictor
+# LƯU Ý QUAN TRỌNG: Đảm bảo bạn có thư mục 'model' và file 'faster_rcnn_ship.pth' nằm bên trong nó
+predictor = ShipPredictor(model_path="model/faster_rcnn_best.pth")
 
 UPLOAD_DIR = "uploads"
 RESULT_DIR = "results"
@@ -29,7 +29,7 @@ os.makedirs(RESULT_DIR, exist_ok=True)
 
 @app.post("/predict")
 async def predict(image: UploadFile = File(...)):
-    # Create unique filenames
+    # Tạo tên file duy nhất chống trùng lặp
     unique_id = str(uuid.uuid4())
     ext = os.path.splitext(image.filename)[1]
     if not ext:
@@ -41,17 +41,17 @@ async def predict(image: UploadFile = File(...)):
     upload_path = os.path.join(UPLOAD_DIR, upload_filename)
     result_path = os.path.join(RESULT_DIR, result_filename)
     
-    # Save uploaded file
+    # Lưu file upload
     with open(upload_path, "wb") as buffer:
         buffer.write(await image.read())
         
-    # Run prediction
-    # Assuming threshold is 0.5 as requested
+    # Chạy dự đoán
+    # THRESHOLD = 0.55 để phù hợp với độ tự tin hiện tại của model
     start_time = time.time()
-    result = predictor.predict(upload_path, result_path, confidence_threshold=0.5)
+    result = predictor.predict(upload_path, result_path, confidence_threshold=0.55)
     print(f"Prediction time: {time.time() - start_time:.2f}s")
     
-    # Add result image URL to result
+    # Gắn URL ảnh trả về cho Frontend hiển thị
     result["result_image"] = f"/results/{result_filename}"
     
     return result
