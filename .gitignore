@@ -1,0 +1,16 @@
+# Python / Backend
+venv/
+env/
+__pycache__/
+*.pyc
+.env
+backend/uploads/*
+backend/results/*
+!backend/uploads/.gitkeep
+!backend/results/.gitkeep
+backend/model/*.pth
+
+# Node / Frontend
+node_modules/
+dist/
+.DS_Store
