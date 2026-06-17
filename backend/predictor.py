@@ -1,7 +1,10 @@
 import os
 import cv2
+# pyrefly: ignore [missing-import]
 import torch
+# pyrefly: ignore [missing-import]
 from torchvision.models.detection import fasterrcnn_resnet50_fpn
+# pyrefly: ignore [missing-import]
 from torchvision.transforms import functional as F
 from PIL import Image
 

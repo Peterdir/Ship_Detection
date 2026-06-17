@@ -1,4 +1,6 @@
 import os
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
+os.environ["OMP_NUM_THREADS"] = "1"
 import uuid
 import time
 from fastapi import FastAPI, UploadFile, File
@@ -65,4 +67,4 @@ async def get_result_image(filename: str):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=False)
