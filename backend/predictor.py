@@ -1,12 +1,15 @@
 import os
 import cv2
+# pyrefly: ignore [missing-import]
 import torch
+# pyrefly: ignore [missing-import]
 from torchvision.models.detection import fasterrcnn_resnet50_fpn
+# pyrefly: ignore [missing-import]
 from torchvision.transforms import functional as F
 from PIL import Image
 
 class ShipPredictor:
-    def __init__(self, model_path="model/faster_rcnn_ship.pth", device=None):
+    def __init__(self, model_path="model/faster_rcnn_best.pth", device=None):
         self.device = device if device else torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.model_path = model_path
         self.model = self._load_model()
