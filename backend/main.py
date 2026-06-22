@@ -50,7 +50,7 @@ async def predict(image: UploadFile = File(...)):
     # Chạy dự đoán
     # THRESHOLD = 0.55 để phù hợp với độ tự tin hiện tại của model
     start_time = time.time()
-    result = predictor.predict(upload_path, result_path, confidence_threshold=0.55)
+    result = predictor.predict(upload_path, result_path, confidence_threshold=0.90)
     print(f"Prediction time: {time.time() - start_time:.2f}s")
     
     # Gắn URL ảnh trả về cho Frontend hiển thị
