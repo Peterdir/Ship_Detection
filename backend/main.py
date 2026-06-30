@@ -48,9 +48,10 @@ async def predict(image: UploadFile = File(...)):
         buffer.write(await image.read())
         
     # Chạy dự đoán
-    # THRESHOLD = 0.55 để phù hợp với độ tự tin hiện tại của model
+    # THRESHOLD = 0.65: Giảm từ 0.90 để phát hiện tàu nhỏ (confidence thường thấp hơn)
+    # False positive được kiểm soát bởi multi-scale NMS + content validation
     start_time = time.time()
-    result = predictor.predict(upload_path, result_path, confidence_threshold=0.90)
+    result = predictor.predict(upload_path, result_path, confidence_threshold=0.65)
     print(f"Prediction time: {time.time() - start_time:.2f}s")
     
     # Gắn URL ảnh trả về cho Frontend hiển thị
